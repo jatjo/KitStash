@@ -1,2 +1,10 @@
-h1 This is a Partial
-h2 {{ myVar }}
+.container
+    .jumbotron
+        h1 KitStash
+        p An application for keeping track of your model kits and/or model trains.
+
+    .row
+        .col-md-6
+            div(ng-include="'/partials/featured-courses'")
+        .col-md-6
+            div(ng-include="'/partials/new-courses'")
