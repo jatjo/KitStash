@@ -47,6 +47,6 @@ app.get('*', function(req, res) {
     });
 })
 
-var port = 3030;
+var port = process.env.PORT || 3030;
 app.listen(port);
 console.log('Listening on port ' + port + '...');
