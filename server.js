@@ -24,7 +24,11 @@ app.use(stylus.middleware(
 ));
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect('mongodb://localhost/kitstash');
+if (env === 'development') {
+    mongoose.connect('mongodb://localhost/kitstash');
+} else {
+    mongoose.connect('mongodb://kitstash:kitstash@ds049130.mongolab.com:49130/kitstash');
+}
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
