@@ -11,16 +11,16 @@ module.exports = function(config) {
     var userSchema = mongoose.Schema({
         firstName: String,
         lastName: String,
-        userName: String
+        username: String
     });
     var User = mongoose.model('User', userSchema);
 
     User.find({}).exec(function(err, collection){
         if (collection.length === 0) {
-            User.create({firstName:'Jan Terje', lastName:'Johansen', userName:'jatjo'});
-            User.create({firstName:'Linda', lastName:'Fahle-Johansen', userName:'linda'});
-            User.create({firstName:'Erik', lastName:'Fahle-Johansen', userName:'erik'});
-            User.create({firstName:'Eskil', lastName:'Fahle-Johansen', userName:'eskil'});
+            User.create({firstName:'Jan Terje', lastName:'Johansen', username:'jatjo'});
+            User.create({firstName:'Linda', lastName:'Fahle-Johansen', username:'linda'});
+            User.create({firstName:'Erik', lastName:'Fahle-Johansen', username:'erik'});
+            User.create({firstName:'Eskil', lastName:'Fahle-Johansen', username:'eskil'});
         }
     })
 }
