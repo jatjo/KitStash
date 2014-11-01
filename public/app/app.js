@@ -25,6 +25,9 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
         .when('/profile', { templateUrl: '/partials/account/profile',
             controller: 'mvProfileCtrl', resolve: routeRoleChecks.user
         })
+        .when('/kits', { templateUrl: '/partials/kits/kits-list',
+            controller: 'mvKitListCtrl'
+        })
 
 });
 
