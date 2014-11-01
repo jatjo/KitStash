@@ -11,6 +11,7 @@ module.exports = function(app) {
     app.put('/api/users', users.updateUser);
 
     app.get('/api/kits', kits.getKits);
+    app.get('/api/kits/:id', kits.getKitById);
 
     app.get('/partials/*', function(req, res) {
         res.render('../../public/app/' + req.params[0]);

@@ -5,3 +5,9 @@ exports.getKits = function(req, res) {
         res.send(collection);
     });
 };
+
+exports.getKitById = function(req, res) {
+    Kit.findOne({_id:req.params.id}).exec(function(err, kit) {
+        res.send(kit);
+    })
+};
