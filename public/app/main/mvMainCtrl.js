@@ -1,3 +1,3 @@
-angular.module('app').controller('mvMainCtrl', function($scope, mvKit) {
-    $scope.kits = mvKit.query();
+angular.module('app').controller('mvMainCtrl', function($scope, mvCachedKits) {
+    $scope.kits = mvCachedKits.query();
 });
