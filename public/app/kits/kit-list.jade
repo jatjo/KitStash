@@ -12,5 +12,6 @@
                 th Aquired
             tbody
                 tr(ng-repeat="kit in kits | filter:searchText | orderBy:sortOrder")
-                    td {{kit.kitName}}
+                    td
+                        a(href="/kits/{{kit._id}}") {{kit.kitName}}
                     td {{kit.aquiredDate | date}}

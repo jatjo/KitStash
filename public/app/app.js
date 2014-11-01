@@ -25,8 +25,11 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
         .when('/profile', { templateUrl: '/partials/account/profile',
             controller: 'mvProfileCtrl', resolve: routeRoleChecks.user
         })
-        .when('/kits', { templateUrl: '/partials/kits/kits-list',
+        .when('/kits', { templateUrl: '/partials/kits/kit-list',
             controller: 'mvKitListCtrl'
+        })
+        .when('/kits/:id', { templateUrl: '/partials/kits/kit-details',
+            controller: 'mvKitDetailCtrl'
         })
 
 });
