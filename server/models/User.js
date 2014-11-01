@@ -13,11 +13,16 @@ var userSchema = mongoose.Schema({
     hashed_pwd: {type:String, required:'{PATH} is required!'},
     roles: [String]
 });
+
 userSchema.methods = {
     authenticate: function(passwordToMatch) {
         return encrypt.hashPwd(this.salt, passwordToMatch) === this.hashed_pwd;
+    },
+    hasRole: function(role) {
+        return this.roles.indexOf(role) > -1;
     }
-}
+};
+
 var User = mongoose.model('User', userSchema);
 
 function createDefaultUsers() {
