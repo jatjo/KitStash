@@ -1,0 +1,5 @@
+.panel.panel-primary
+    .panel-heading.text-center Kits in Stock
+    .panel-body
+        .row(ng-repeat="kit in kits | filter:{inStock:true}")
+            .col-md-12 {{kit.kitName}}

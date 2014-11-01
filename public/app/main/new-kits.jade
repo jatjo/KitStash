@@ -1,0 +1,6 @@
+.panel.panel-primary
+    .panel-heading.text-center New Kits
+    .panel-body
+        .row(ng-repeat="kit in kits | orderBy:'aquiredDate':true | limitTo:10")
+            .col-md-3 {{kit.aquiredDate | date:'MMM d'}}
+            .col-md-9 {{kit.kitName}}
