@@ -1,5 +1,7 @@
 angular.module('app').controller('mvImageUploadCtrl', function($log, $scope, $modalInstance, FileUploader) {
-    var uploader = $scope.uploader = new FileUploader();
+    var uploader = $scope.uploader = new FileUploader({
+        url: "/api/kits/uploadImage"
+    });
 
     uploader.filters.push({
       name: 'imageFilter',
@@ -9,15 +11,15 @@ angular.module('app').controller('mvImageUploadCtrl', function($log, $scope, $mo
       }
     });
 
-    uploader.onCompleteItem = function(fileItem, response, status, headers) {
-      $scope.slides.push({
-        image: fileItem,
-        text: 'Some text'
-      });
-      $log.info('onCompleteItem', fileItem, response, status, headers);
+    var filesUploaded = [];
+
+    uploader.onSuccessItem = function(fileItem, response, status, headers) {
+      filesUploaded.add(fileItem);
+      $log.info('onSuccessItem', fileItem, response, status, headers);
     };
 
     $scope.submitForm = function() {
+      $log.info(filesUploaded);
       $modalInstance.close();
     };
 
