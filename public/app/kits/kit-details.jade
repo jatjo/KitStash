@@ -4,11 +4,24 @@
         .col-md-6
             h3(ng-show="kit.inStock") In Stock
             h3 Aquired on {{kit.aquiredDate | date}}
-            button.btn.btn-primary(ng-click="uploadImage()") Upload image(s)
 
         .col-md-6
             .panel.panel-primary
                 .panel-heading Tags
                 .panel-body
                     div(ng-repeat="tag in kit.tags") {{tag}}
+
+        .row
+            .col-md-6.show-grid
+                div(style="height: 305px")
+                    carousel(interval="5000")
+                        slide(ng-repeat="slide in slides" active="slide.active")
+                            img(ng-src="{{slide.image}}" style="margin:auto;")
+                            .carousel-caption
+                                h4 Slide {{$index}}
+                                p {{slide.text}}
+
+            .row
+                .col-md-6
+                    button.btn.btn-primary(ng-click="uploadImage()") Upload image(s)
 
