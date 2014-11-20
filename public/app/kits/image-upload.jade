@@ -7,78 +7,82 @@ div.modal-body
             .col-md-6
                 .well.my-drop-zone(nv-file-over="" uploader="uploader")
                     | Base drop zone
+            .col-md-6
+                | Multiple files
+                input(type="file" nv-file-select uploader="uploader" multiple)
+
+        .row
             .col-md-6(nv-file-drop="" uploader="uploader" options="{ url: '/foo' }")
                 .well.my-drop-zone(nv-file-over="" uploader="uploader" over-class="another-file-over-class")
                     | Another drop zone with its own settings
 
-        .row
-            .col-md-6
-                | Multiple files
-                input(type="file" nv-file-select uploader="uploader" multiple)
             .col-md-6
                 | Single file
                 input(type="file" nv-file-select uploader="uploader")
 
-    .col-md-12(style="margin-bottom:40px")
-        h4 Upload queue
-        p.ng-binding Queue length: {{ uploader.queue.length }}
+        .row
+            .col-md-12
+                table.table
+                    thead
+                        tr
+                            th Name
+                            th(ng-show="uploader.isHTML5") Size
+                            th(ng-show="uploader.isHTML5") Progress
+                            th Status
+                            th Actions
 
-        table.table
-            thead
-                tr
-                    th(style='width="50%"') Name
-                    th(ng-show="uploader.isHTML5") Size
-                    th(ng-show="uploader.isHTML5") Progress
-                    th Status
-                    th Actions
+                    tbody
+                        tr(ng-repeat="item in uploader.queue")
+                            td
+                                strong {{ item.file.name }}
+                                div(ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }")
+                            td(ng-show="uploader.isHTML5" nowrap) {{ item.file.size/1024/1024|number:2 }} MB
+                            td(ng-show="uploader.isHTML5")
+                                div.progress(style="margin-bottom: 0;")
+                                    div.progress-bar(role="progressbar" ng-style="{ 'width': item.progress + '%' }")
+                            td.text-center
+                                span(ng-show="item.isSuccess")
+                                    i.glyphicon.glyphicon-ok
+                                span(ng-show="item.isCancel")
+                                    i.glyphicon.glyphicon-ban-circle
+                                span(ng-show="item.isError")
+                                    i.glyphicon.glyphicon-remove
 
-            tbody
-                tr(ng-repeat="item in uploader.queue")
-                    td
-                        strong {{ item.file.name }}
-                        div(ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }")
-                    td(ng-show="uploader.isHTML5" nowrap) {{ item.file.size/1024/1024|number:2 }} MB
-                    td(ng-show="uploader.isHTML5")
-                        div.progress(style="margin-bottom: 0;")
-                            div.progress-bar(role="progressbar" ng-style="{ 'width': item.progress + '%' }")
-                    td.text-center
-                        span(ng-show="item.isSuccess")
-                            i.glyphicon.glyphicon-ok
-                        span(ng-show="item.isCancel")
-                            i.glyphicon.glyphicon-ban-circle
-                        span(ng-show="item.isError")
-                            i.glyphicon.glyphicon-remove
+                            td(nowrap)
+                                button.btn.btn-success.btn-xs(type="button" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess")
+                                    span.glyphicon.glyphicon-upload
+                                    | &nbsp;Upload
+                                | &nbsp;
 
-                    td(nowrap)
-                        button.btn.btn-success.btn-xs(type="button" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess")
-                            span.glyphicon.glyphicon-upload
-                            | &nbsp;Upload
+                                button.btn.btn-warning.btn-xs(type="button" ng-click="item.cancel()" ng-disabled="!item.isUploading" disabled="disabled")
+                                    span.glyphicon.glyphicon-ban-circle
+                                    | &nbsp;Cancel
+                                | &nbsp;
 
-                        button.btn.btn-warning.btn-xs(type="button" ng-click="item.cancel()" ng-disabled="!item.isUploading" disabled="disabled")
-                            span.glyphicon.glyphicon-ban-circle
-                            | &nbsp;Cancel
+                                button.btn.btn-danger.btn-xs(type="button" ng-click="item.remove()")
+                                    span.glyphicon.glyphicon-trash
+                                    | &nbsp;Remove
+                                | &nbsp;
 
-                        button.btn.btn-danger.btn-xs(type="button" ng-click="item.remove()")
-                            span.glyphicon.glyphicon-trash
-                            | &nbsp;Remove
-
-        div
-            div
-                | Queue progress:
-                div.progress
-                    div.progress-bar(role="progressbar" ng-style="{ 'width': uploader.progress + '%' }")
+                div
+                    | Queue progress:
+                    div.progress
+                        div.progress-bar(role="progressbar" ng-style="{ 'width': uploader.progress + '%' }")
 
                 button.btn.btn-success.btn-s(type="button" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length")
                     span.glyphicon.glyphicon-upload
                     | &nbsp;Upload all
+                | &nbsp;
 
                 button.btn.btn-warning.btn-s(type="button" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading" disabled="disabled")
                     span.glyphicon.glyphicon-ban-circle
                     | &nbsp;Cancel all
+                | &nbsp;
 
                 button.btn.btn-danger.btn-s(type="button" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length")
                     span.glyphicon.glyphicon-trash
                     | &nbsp;Remove all
+                | &nbsp;
 
 div.modal-footer
     .col-sm-offset-3.col-sm-9

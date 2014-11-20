@@ -12,6 +12,7 @@ module.exports = function(app) {
 
     app.get('/api/kits', kits.getKits);
     app.get('/api/kits/:id', kits.getKitById);
+    app.post('/api/kits/uploadImage', kits.uploadImage);
 
     app.get('/partials/*', function(req, res) {
         res.render('../../public/app/' + req.params[0]);

@@ -26,7 +26,7 @@ exports.createUser = function(req, res, next) {
         })
 
     })
-}
+};
 
 exports.updateUser = function(req, res) {
     var userUpdated = req.body;
