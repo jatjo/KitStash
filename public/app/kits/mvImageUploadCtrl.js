@@ -14,16 +14,16 @@ angular.module('app').controller('mvImageUploadCtrl', function($log, $scope, $mo
     var filesUploaded = [];
 
     uploader.onSuccessItem = function(fileItem, response, status, headers) {
-      filesUploaded.add(fileItem);
+      //filesUploaded.add(fileItem);
       $log.info('onSuccessItem', fileItem, response, status, headers);
     };
 
-    $scope.submitForm = function() {
+    $scope.done = function() {
       $log.info(filesUploaded);
       $modalInstance.close();
     };
 
-    $scope.cancelForm = function() {
+    $scope.cancel = function() {
       $modalInstance.dismiss();
     };
 });
