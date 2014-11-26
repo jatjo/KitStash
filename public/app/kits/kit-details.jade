@@ -5,11 +5,17 @@
             h3(ng-show="kit.inStock") In Stock
             h3 Aquired on {{kit.aquiredDate | date}}
 
-        .col-md-6
+        .col-md-3
             .panel.panel-primary
                 .panel-heading Tags
                 .panel-body
                     div(ng-repeat="tag in kit.tags") {{tag}}
+
+        .col-md-3
+            .panel.panel-primary
+                .panel-heading Files
+                .panel-body
+                    div(ng-repeat="fileId in kit.fileIds") {{$index}} {{fileId}}
 
         .row
             .col-md-6.show-grid
