@@ -14,6 +14,20 @@ exports.getKitById = function(req, res) {
     })
 };
 
-exports.uploadImage = function(req, res) {
-    saveImage(req, res);
+exports.uploadImage = function(req, res, next) {
+    saveImage(req, res, function(kitId, fileId) {
+        Kit.findOne({_id:kitId}).exec(function(err, kit) {
+            if (err) { return next(err); }
+
+            kit.fileIds.push(fileId);
+
+            kit.save(function(err) {
+                if (err) { return next(err); }
+                res.writeHead(200, {'content-type': 'text/plain'});
+                res.write('Upload success');
+                res.end();
+            });
+        })
+    });
 };
+

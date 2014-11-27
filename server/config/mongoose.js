@@ -22,7 +22,8 @@ exports.setup = function(config) {
     kitModel.createDefaultKits();
 };
 
-exports.saveImage = function(req, res) {
+// TODO move to kits.js and make function to get gfs from this (mongoose.js) file.
+exports.saveImage = function(req, res, callback) {
   var form = new multiparty.Form();
   form.parse(req, function(err, fields, files) {
     for (var idx = 0; idx < files.file.length; idx++) {
@@ -35,12 +36,11 @@ exports.saveImage = function(req, res) {
         mode: 'w'
       });
 
+      writestream.on('close', function(file) {
+        callback(fields.kitId, file._id);
+      });
+
       fs.createReadStream(tempPathAndFile)
-        .on('end', function () {
-          res.writeHead(200, {'content-type': 'text/plain'});
-          res.write('received upload:\n\n');
-          res.end(util.inspect({fields: fields, files: util.inspect(files)}));
-        })
         .on('error', function () {
           res.writeHead(500, {'content-type': 'text/plain'});
           res.write('upload failed:\n\n');

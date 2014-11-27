@@ -1,4 +1,4 @@
-angular.module('app').controller('mvImageUploadCtrl', function($log, $scope, $modalInstance, FileUploader) {
+angular.module('app').controller('mvImageUploadCtrl', function($log, $scope, $routeParams, $modalInstance, FileUploader) {
     var uploader = $scope.uploader = new FileUploader({
         url: "/api/kits/uploadImage"
     });
@@ -11,15 +11,18 @@ angular.module('app').controller('mvImageUploadCtrl', function($log, $scope, $mo
       }
     });
 
-    var filesUploaded = [];
+    uploader.onBeforeUploadItem = function(item) {
+        formData = [{
+            kitId: $routeParams.id
+        }];
+        Array.prototype.push.apply(item.formData, formData);
+    };
 
     uploader.onSuccessItem = function(fileItem, response, status, headers) {
-      //filesUploaded.add(fileItem);
       $log.info('onSuccessItem', fileItem, response, status, headers);
     };
 
     $scope.done = function() {
-      $log.info(filesUploaded);
       $modalInstance.close();
     };
 

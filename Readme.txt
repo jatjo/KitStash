@@ -9,4 +9,5 @@ npm install stylus morgan body-parser
 npm install mongoose
 npm install passport passport-local
 npm install cookie-parser
+npm install gridfs-stream
 
