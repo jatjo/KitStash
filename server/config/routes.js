@@ -11,6 +11,7 @@ module.exports = function(app) {
     app.put('/api/users', users.updateUser);
 
     app.get('/api/kits', kits.getKits);
+    app.get('/api/kits/downloadImage', kits.downloadImage);
     app.get('/api/kits/:id', kits.getKitById);
     app.post('/api/kits/uploadImage', kits.uploadImage);
 

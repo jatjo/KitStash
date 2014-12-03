@@ -24,9 +24,11 @@ angular.module('app').controller('mvImageUploadCtrl', function($log, $scope, $ro
 
     $scope.done = function() {
       $modalInstance.close();
+      // TODO: Somehow make carousel reload images from database
     };
 
     $scope.cancel = function() {
       $modalInstance.dismiss();
+      // TODO: should uploaded images be deleted?
     };
 });

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose'),
+    base64 = require('base64-stream'),
     fs = require('fs'),
     Grid = require('gridfs-stream'),
     multiparty = require('multiparty'),
@@ -49,4 +50,20 @@ exports.saveImage = function(req, res, callback) {
         .pipe(writestream);
     }
   });
-}
+};
+
+exports.getImage = function (req, res) {
+  // TODO: set proper mime type + filename, handle errors, etc...
+  res.writeHead(200, {
+    'Content-Type': 'image/png',
+    'Access-Control-Allow-Origin': '*',
+    'Content-Disposition': 'inline;filename=somefile.png'
+  });
+  gfs
+    // create a read stream from gfs...
+    .createReadStream({
+      _id: req.param('imageId')
+    })
+    // and pipe it to Express' response
+    .pipe(base64.encode()).pipe(res);
+};

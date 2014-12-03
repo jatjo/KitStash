@@ -1,6 +1,7 @@
 var util = require('util'),
     Kit = require('mongoose').model('Kit'),
-    saveImage = require('../config/mongoose').saveImage;
+    saveImage = require('../config/mongoose').saveImage,
+    getImage = require('../config/mongoose').getImage;
 
 exports.getKits = function(req, res) {
     Kit.find({}).exec(function(err, collection) {
@@ -29,5 +30,9 @@ exports.uploadImage = function(req, res, next) {
             });
         })
     });
+};
+
+exports.downloadImage = function(req, res, next) {
+    getImage(req, res);
 };
 

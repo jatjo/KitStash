@@ -11,3 +11,8 @@ npm install passport passport-local
 npm install cookie-parser
 npm install gridfs-stream
 
+
+// Remove after done
+bower install angular-carousel --save
+https://github.com/revolunet/angular-carousel
+

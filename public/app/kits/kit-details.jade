@@ -18,16 +18,11 @@
                     div(ng-repeat="fileId in kit.fileIds") {{$index}} {{fileId}}
 
         .row
-            .col-md-6.show-grid
-                div(style="height: 305px")
-                    carousel(interval="5000")
+            .col-md-11.show-grid
+                div(style="height: 200px")
+                    carousel(interval="1000")
                         slide(ng-repeat="slide in slides" active="slide.active")
-                            img(ng-src="{{slide.image}}" style="margin:auto;")
-                            .carousel-caption
-                                h4 Slide {{$index}}
-                                p {{slide.text}}
+                            img(ng-src="data:image/png;base64,{{slide.image}}" style="width:auto;height:100px")
 
-            .row
-                .col-md-6
-                    button.btn.btn-primary(ng-click="uploadImage()") Upload image(s)
-
+            .col-md-1
+                button.btn.btn-primary(ng-click="uploadImage()") Upload image(s)

@@ -3,6 +3,12 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
         collection.forEach(function(kit) {
             if (kit._id === $routeParams.id) {
                 $scope.kit = kit;
+
+                kit.fileIds.forEach(function(imageId) {
+                  mvCachedKits.image(imageId).then(function(image) {
+                    $scope.addSlide(image);
+                  });
+                })
             }
         })
     });
@@ -21,16 +27,9 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
     };
 
     var slides = $scope.slides = [];
-    $scope.addSlide = function() {
-      var newWidth = 600 + slides.length + 1;
+    $scope.addSlide = function(image) {
       slides.push({
-        image: 'http://placekitten.com/' + newWidth + '/300',
-        text: ['More','Extra','Lots of','Surplus'][slides.length % 4] + ' ' +
-          ['Cats', 'Kittys', 'Felines', 'Cutes'][slides.length % 4]
+        image: image
       });
     };
-
-    /*for (var i=0; i<4; i++) {
-      $scope.addSlide();
-    };*/
 });
