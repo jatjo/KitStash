@@ -1,13 +1,12 @@
 var mongoose = require('mongoose'),
-    base64 = require('base64-stream'),
-    fs = require('fs'),
     Grid = require('gridfs-stream'),
-    multiparty = require('multiparty'),
     util = require('util'),
     userModel = require('../models/User'),
     kitModel = require('../models/Kit');
 
-var gfs;
+exports.GridFS = function() {
+  return gfs;
+};
 
 exports.setup = function(config) {
     mongoose.connect(config.db);
@@ -23,47 +22,3 @@ exports.setup = function(config) {
     kitModel.createDefaultKits();
 };
 
-// TODO move to kits.js and make function to get gfs from this (mongoose.js) file.
-exports.saveImage = function(req, res, callback) {
-  var form = new multiparty.Form();
-  form.parse(req, function(err, fields, files) {
-    for (var idx = 0; idx < files.file.length; idx++) {
-      var filename = files.file[idx].originalFilename;
-      var tempPathAndFile = files.file[idx].path;
-
-      var writestream = gfs.createWriteStream({
-        filename: filename,
-        safe: true,
-        mode: 'w'
-      });
-
-      writestream.on('close', function(file) {
-        callback(fields.kitId, file._id);
-      });
-
-      fs.createReadStream(tempPathAndFile)
-        .on('error', function () {
-          res.writeHead(500, {'content-type': 'text/plain'});
-          res.write('upload failed:\n\n');
-          res.end(util.inspect({fields: fields, files: files}));
-        })
-        .pipe(writestream);
-    }
-  });
-};
-
-exports.getImage = function (req, res) {
-  // TODO: set proper mime type + filename, handle errors, etc...
-  res.writeHead(200, {
-    'Content-Type': 'image/png',
-    'Access-Control-Allow-Origin': '*',
-    'Content-Disposition': 'inline;filename=somefile.png'
-  });
-  gfs
-    // create a read stream from gfs...
-    .createReadStream({
-      _id: req.param('imageId')
-    })
-    // and pipe it to Express' response
-    .pipe(base64.encode()).pipe(res);
-};

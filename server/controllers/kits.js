@@ -1,7 +1,9 @@
 var util = require('util'),
+    multiparty = require('multiparty'),
+    fs = require('fs'),
+    base64 = require('base64-stream'),
     Kit = require('mongoose').model('Kit'),
-    saveImage = require('../config/mongoose').saveImage,
-    getImage = require('../config/mongoose').getImage;
+    gridFS = require('../config/mongoose').GridFS;
 
 exports.getKits = function(req, res) {
     Kit.find({}).exec(function(err, collection) {
@@ -32,7 +34,43 @@ exports.uploadImage = function(req, res, next) {
     });
 };
 
-exports.downloadImage = function(req, res, next) {
-    getImage(req, res);
+saveImage = function(req, res, callback) {
+  var form = new multiparty.Form();
+  form.parse(req, function(err, fields, files) {
+    for (var idx = 0; idx < files.file.length; idx++) {
+      var filename = files.file[idx].originalFilename;
+      var tempPathAndFile = files.file[idx].path;
+
+      var writestream = gridFS().createWriteStream({
+        filename: filename,
+        safe: true,
+        mode: 'w'
+      });
+
+      writestream.on('close', function(file) {
+        callback(fields.kitId, file._id);
+      });
+
+      fs.createReadStream(tempPathAndFile)
+        .on('error', function () {
+          res.writeHead(500, {'content-type': 'text/plain'});
+          res.write('upload failed:\n\n');
+          res.end(util.inspect({fields: fields, files: files}));
+        })
+        .pipe(writestream);
+    }
+  });
 };
 
+exports.downloadImage = function(req, res, next) {
+  // TODO: set content type based on file in gfs
+  res.writeHead(200, {
+    'Content-Type': 'image/png',
+    'Access-Control-Allow-Origin': '*'
+  });
+  gridFS()
+    .createReadStream({
+      _id: req.param('imageId')
+    })
+    .pipe(base64.encode()).pipe(res);
+};
