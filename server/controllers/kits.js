@@ -18,23 +18,6 @@ exports.getKitById = function(req, res) {
 };
 
 exports.uploadImage = function(req, res, next) {
-    saveImage(req, res, function(kitId, fileId) {
-        Kit.findOne({_id:kitId}).exec(function(err, kit) {
-            if (err) { return next(err); }
-
-            kit.fileIds.push(fileId);
-
-            kit.save(function(err) {
-                if (err) { return next(err); }
-                res.writeHead(200, {'content-type': 'text/plain'});
-                res.write(JSON.stringify({'fileId' : fileId}));
-                res.end();
-            });
-        })
-    });
-};
-
-saveImage = function(req, res, callback) {
   var form = new multiparty.Form();
   form.parse(req, function(err, fields, files) {
     for (var idx = 0; idx < files.file.length; idx++) {
@@ -48,7 +31,19 @@ saveImage = function(req, res, callback) {
       });
 
       writestream.on('close', function(file) {
-        callback(fields.kitId, file._id);
+        // Find kit and add file id (ie. image id) to kit
+        Kit.findOne({_id:fields.kitId}).exec(function(err, kit) {
+          if (err) { return next(err); }
+
+          kit.fileIds.push(file._id);
+
+          kit.save(function(err) {
+            if (err) { return next(err); }
+            res.writeHead(200, {'content-type': 'text/plain'});
+            res.write(JSON.stringify({'fileId' : fileId}));
+            res.end();
+          });
+        })
       });
 
       fs.createReadStream(tempPathAndFile)
