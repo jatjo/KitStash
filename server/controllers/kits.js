@@ -27,7 +27,7 @@ exports.uploadImage = function(req, res, next) {
             kit.save(function(err) {
                 if (err) { return next(err); }
                 res.writeHead(200, {'content-type': 'text/plain'});
-                res.write('Upload success');
+                res.write(JSON.stringify({'fileId' : fileId}));
                 res.end();
             });
         })

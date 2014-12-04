@@ -7,7 +7,7 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
                 kit.fileIds.forEach(function(imageId) {
                   mvCachedKits.image(imageId).then(function(image) {
                     $scope.addSlide('data:image/png;base64,' + image);
-                    images.push('data:image/png;base64,' + image);
+//                    images.push('data:image/png;base64,' + image);
                   });
                 })
             }
@@ -20,14 +20,26 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
             controller: 'mvImageUploadCtrl'
         });
 
-        modalInstance.result.then(function () {
-          $log.info('Modal closed at: ' + new Date());
-        }, function () {
-          $log.info('Modal dismissed at: ' + new Date());
-        });
+        modalInstance.result.then(
+          function (uploadedFileIds) {
+            $log.info('Modal closed at: ' + new Date());
+            $log.info('Returned fileids: ' + uploadedFileIds);
+
+            // Adding new images to carousel.
+            uploadedFileIds.forEach(function(imageId) {
+              mvCachedKits.image(imageId).then(function(image) {
+                $scope.addSlide('data:image/png;base64,' + image);
+              });
+            })
+          },
+          function () {
+            // TODO: should uploaded images be deleted?
+            $log.info('Modal dismissed at: ' + new Date());
+          }
+        );
     };
 
-    var images = $scope.images = [];
+//    var images = $scope.images = [];
     var slides = $scope.slides = [];
     $scope.addSlide = function(image) {
       slides.push({
@@ -35,3 +47,4 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
       });
     };
 });
+

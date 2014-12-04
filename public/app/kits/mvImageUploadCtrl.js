@@ -18,17 +18,18 @@ angular.module('app').controller('mvImageUploadCtrl', function($log, $scope, $ro
         Array.prototype.push.apply(item.formData, formData);
     };
 
+    var uploadedFileIds = [];
+
     uploader.onSuccessItem = function(fileItem, response, status, headers) {
+      uploadedFileIds.push(response.fileId);
       $log.info('onSuccessItem', fileItem, response, status, headers);
     };
 
     $scope.done = function() {
-      $modalInstance.close();
-      // TODO: Somehow make carousel reload images from database
+      $modalInstance.close(uploadedFileIds);
     };
 
     $scope.cancel = function() {
       $modalInstance.dismiss();
-      // TODO: should uploaded images be deleted?
     };
 });
