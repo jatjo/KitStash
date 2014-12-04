@@ -6,7 +6,8 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
 
                 kit.fileIds.forEach(function(imageId) {
                   mvCachedKits.image(imageId).then(function(image) {
-                    $scope.addSlide(image);
+                    $scope.addSlide('data:image/png;base64,' + image);
+                    images.push('data:image/png;base64,' + image);
                   });
                 })
             }
@@ -26,6 +27,7 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
         });
     };
 
+    var images = $scope.images = [];
     var slides = $scope.slides = [];
     $scope.addSlide = function(image) {
       slides.push({

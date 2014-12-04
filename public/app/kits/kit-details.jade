@@ -22,7 +22,11 @@
                 div(style="height: 200px")
                     carousel(interval="1000")
                         slide(ng-repeat="slide in slides" active="slide.active")
-                            img(ng-src="data:image/png;base64,{{slide.image}}" style="width:auto;height:100px")
+                            img(ng-src="{{slide.image}}" style="width:auto;height:100px")
+
+                ul.image(rn-carousel rn-carousel-controls rn-carousel-buffered)
+                    li(ng-repeat="image in images")
+                        .bgimage(ng-style="{'background-image': 'url({{image.image}})'}")
 
             .col-md-1
                 button.btn.btn-primary(ng-click="uploadImage()") Upload image(s)

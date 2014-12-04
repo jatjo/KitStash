@@ -1,4 +1,4 @@
-angular.module('app', ['ngResource', 'ngRoute', 'ui.utils', 'ui.bootstrap', 'angularFileUpload']);
+angular.module('app', ['ngResource', 'ngRoute', 'ui.utils', 'ui.bootstrap', 'angularFileUpload', 'angular-carousel']);
 
 angular.module('app').config(function($routeProvider, $locationProvider) {
     var routeRoleChecks = {
