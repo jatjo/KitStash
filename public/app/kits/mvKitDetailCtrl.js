@@ -34,12 +34,13 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
         image: image
       });
     };
+
+    function addImagesToCarousel(imageIds){
+      imageIds.forEach(function(imageId) {
+        mvCachedKits.image(imageId).then(function(image) {
+          $scope.addSlide('data:image/png;base64,' + image);
+        });
+      })
+    };
 });
 
-var addImagesToCarousel = function(imageIds){
-  imageIds.forEach(function(imageId) {
-    mvCachedKits.image(imageId).then(function(image) {
-      $scope.addSlide('data:image/png;base64,' + image);
-    });
-  })
-};
