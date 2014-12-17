@@ -39,7 +39,7 @@ angular.module('app').controller('mvKitDetailCtrl', function($log, $scope, $rout
       imageIds.forEach(function(imageId) {
         mvCachedKits.image(imageId).then(function(image) {
           // TODO: check image type, png, jpeg, gif
-          $scope.addSlide('data:base64,' + image);
+          $scope.addSlide('data:image/png;base64,' + image);
         });
       })
     };
