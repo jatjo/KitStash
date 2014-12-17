@@ -3,6 +3,7 @@ var util = require('util'),
     fs = require('fs'),
     base64 = require('base64-stream'),
     Kit = require('mongoose').model('Kit'),
+    ObjectId = require('mongoose').Schema.ObjectId,
     gridFS = require('../config/mongoose').GridFS;
 
 exports.getKits = function(req, res) {
@@ -18,6 +19,7 @@ exports.getKitById = function(req, res) {
 };
 
 exports.uploadImage = function(req, res, next) {
+  // TODO: use http://cnpmjs.org/package/gridfs-locking-stream
   var form = new multiparty.Form();
   form.parse(req, function(err, fields, files) {
     for (var idx = 0; idx < files.file.length; idx++) {
@@ -58,14 +60,11 @@ exports.uploadImage = function(req, res, next) {
 };
 
 exports.downloadImage = function(req, res, next) {
-  // TODO: set content type based on file in gfs
-  res.writeHead(200, {
-    'Content-Type': 'image/png',
-    'Access-Control-Allow-Origin': '*'
-  });
+  // TODO: use http://cnpmjs.org/package/gridfs-locking-stream
+  var imageId = req.param('imageId');
   gridFS()
     .createReadStream({
-      _id: req.param('imageId')
+      _id: imageId
     })
     .pipe(base64.encode()).pipe(res);
 };

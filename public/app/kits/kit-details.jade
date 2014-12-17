@@ -5,28 +5,31 @@
             h3(ng-show="kit.inStock") In Stock
             h3 Aquired on {{kit.aquiredDate | date}}
 
-        .col-md-3
+        .col-md-4
             .panel.panel-primary
                 .panel-heading Tags
                 .panel-body
                     div(ng-repeat="tag in kit.tags") {{tag}}
 
-        .col-md-3
-            .panel.panel-primary
-                .panel-heading Files
-                .panel-body
-                    div(ng-repeat="fileId in kit.fileIds") {{$index}} {{fileId}}
+
+        .col-md-2
+            .row
+                button.btn.btn-primary(ng-click="uploadImage({{kit_id}})") Upload image(s)
+            .row
+                button.btn.btn-primary(ng-model="showCarousel" ng-click="showCarousel = !showCarousel") Show image(s)
 
         .row
-            .col-md-11.show-grid
-                div(style="height: 200px")
-                    carousel(interval="1000")
+            .col-md-9.show-grid
+                div(style="height: 305px" id="carousel" ng-show="showCarousel")
+                    carousel(interval="carouselInterval")
                         slide(ng-repeat="slide in slides" active="slide.active")
-                            img(ng-src="{{slide.image}}" style="width:auto;height:100px")
+                            img(ng-src="{{slide.image}}" style="margin-auto")
+                            .carousel-caption
+                            h4 Slide {{$index}}
+                            p Some text
 
-                ul.image(rn-carousel rn-carousel-controls rn-carousel-buffered)
-                    li(ng-repeat="image in images")
-                        .bgimage(ng-style="{'background-image': 'url({{image.image}})'}")
-
-            .col-md-1
-                button.btn.btn-primary(ng-click="uploadImage({{kit_id}})") Upload image(s)
+            .col-md-3
+                .panel.panel-primary
+                    .panel-heading Files
+                    .panel-body
+                        div(ng-repeat="fileId in kit.fileIds") {{$index}} {{fileId}}
